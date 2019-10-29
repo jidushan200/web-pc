@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import local from "@/utils/local";
 export default {
   data() {
     // 自定义手机号检验函数
@@ -58,8 +59,8 @@ export default {
 
     return {
       loginForm: {
-        mobile: "",
-        code: ""
+        mobile: "16666666666",
+        code: "246810"
       },
       Loginrules: {
         mobile: [
@@ -76,17 +77,29 @@ export default {
   },
   methods: {
     login() {
-      this.$refs["loginForm"].validate(valid => {
+      // 获取表单组件实例 ---> 调用校验函数
+      this.$refs["loginForm"].validate(async valid => {
         if (valid) {
+          // 当一段代码不能保证一定没有报错  try {} catch (e) {} 捕获异常处理异常
           // 校验手机号 验证码 登录 后台验证
-          this.$http.post("authorizations", this.loginForm).then(result => {
-            if (result.status == 201) {
-              // 校验成功,跳转到主页"/"
-              // console.log(16666666666, 246810);
-              console.log(this.$router);
-              this.$router.push("/");
-            }
-          });
+          try {
+            const {
+              data: { data }
+            } = await this.$http.post("authorizations", this.loginForm);
+            local.setUser(data);
+            this.$router.push("/");
+          } catch (e) {
+            this.$message({
+              showClose: true,
+              message: "实参值不对或形参名与api不匹配",
+              type: "error"
+            });
+          }
+
+          // this.$http.post("authorizations", this.loginForm).then(result => {
+          //   local.setUser(result.data.data);
+          //   this.$router.push("/");
+          // });
         } else {
           this.$message({
             showClose: true,

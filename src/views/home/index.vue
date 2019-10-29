@@ -12,7 +12,7 @@
       <el-menu
         :collapse="!isOpen"
         :collapse-transition="false"
-        default-active="1"
+        default-active="/"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -59,15 +59,19 @@
         <!-- 文字 -->
         <span class="text">江苏传智播客科技教育有限公司</span>
         <!-- 下拉菜单 -->
-        <el-dropdown class="dropdown">
+        <el-dropdown class="dropdown" @command="zhjclicks">
           <span class="el-dropdown-link">
             <img class="headIcon" src="./../../assets/avatar.jpg" alt />
             <span class="userName">用户名称</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" command="setting"
+              >个人设置</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-unlock" command="logout"
+              >退出登录</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -81,6 +85,7 @@
 </template>
 
 <script>
+import local from "@/utils/local";
 export default {
   data() {
     return {
@@ -91,6 +96,16 @@ export default {
     toggleMenu() {
       // 切换左菜单 展开与收起
       this.isOpen = !this.isOpen;
+    },
+    setting() {
+      this.$router.push("/setting");
+    },
+    logout() {
+      local.delUser();
+      this.$router.push("/login");
+    },
+    zhjclicks(command) {
+      this[command]();
     }
   }
 };
