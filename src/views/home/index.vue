@@ -12,7 +12,7 @@
       <el-menu
         :collapse="!isOpen"
         :collapse-transition="false"
-        default-active="/"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -61,8 +61,8 @@
         <!-- 下拉菜单 -->
         <el-dropdown class="dropdown" @command="zhjclicks">
           <span class="el-dropdown-link">
-            <img class="headIcon" src="./../../assets/avatar.jpg" alt />
-            <span class="userName">用户名称</span>
+            <img class="headIcon" :src="userInfo.photo" alt />
+            <span class="userName">{{ userInfo.name }}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -89,8 +89,15 @@ import local from "@/utils/local";
 export default {
   data() {
     return {
-      isOpen: true
+      isOpen: true,
+      userInfo: {}
     };
+  },
+  created() {
+    // 设置用户信息
+    const user = local.getUser() || {};
+    this.userInfo.name = user.name;
+    this.userInfo.photo = user.photo;
   },
   methods: {
     toggleMenu() {

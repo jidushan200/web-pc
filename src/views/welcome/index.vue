@@ -10,6 +10,7 @@ export default {
     this.$http
       .get("http://ttapi.research.itcast.cn/mp/v1_0/articles")
       .then(res => {
+        console.log("/articles,获取文章内容成功");
         console.log(res.data);
       })
       .catch(() => {

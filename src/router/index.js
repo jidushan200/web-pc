@@ -1,13 +1,22 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
-
+// 登录页
 import Login from "@/views/login";
-import Home from "@/views/home";
-import Welcome from "@/views/welcome";
-import NotFound from "@/views/404";
 
+// 主页面
+import Home from "@/views/home"; //首页
+import Welcome from "@/views/welcome"; //欢迎页
+import Article from "@/views/article"; //内容管理
+import Image from "@/views/image"; //素材管理
+import Publish from "@/views/publish"; //发布文章
+
+// 404
+import NotFound from "@/views/404"; //404页面
+
+// 保存用户信息
 import local from "@/utils/local";
 
+// Vue配置路由组件
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -20,7 +29,13 @@ const router = new VueRouter({
       component: Home,
       children: [
         // 欢迎
-        { path: "/", component: Welcome }
+        { path: "/", component: Welcome },
+        // 内容管理
+        { path: "/article", component: Article },
+        // 素材管理
+        { path: "/image", component: Image },
+        // 发布文章
+        { path: "/publish", component: Publish }
       ]
     },
     // 匹配 不符合规则的路径

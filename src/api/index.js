@@ -1,14 +1,24 @@
-// 引入axios
-import axios from "axios";
-// 引入local——sessionStorage设置
-import local from "@/utils/local";
-// 引入vue-router
-import router from "@/router";
+// 模块导入
+import axios from "axios"; // 引入axios
+import local from "@/utils/local"; // 引入local——sessionStorage设置
+import router from "@/router"; // 引入vue-router
+import JSONBIG from "json-bigint";
 
 // 编辑axios
 // 基准地址
+// 插件json-bigint转换json数据
 axios.defaults.baseURL = "http://ttapi.research.itcast.cn/mp/v1_0/";
-
+axios.defaults.transformResponse = [
+  data => {
+    // 对data格式转换
+    // data就是json字符串
+    try {
+      return JSONBIG.parse(data);
+    } catch (e) {
+      return data;
+    }
+  }
+];
 // "请求" 拦截器
 axios.interceptors.request.use(
   con => {

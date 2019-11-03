@@ -54,12 +54,9 @@ export default {
         callback(new Error("手机号格式不正确"));
       }
     };
-
-    // 整体检验
-
     return {
       loginForm: {
-        mobile: "16666666666",
+        mobile: "13911111111",
         code: "246810"
       },
       Loginrules: {
@@ -77,6 +74,7 @@ export default {
   },
   methods: {
     login() {
+      // 整体检验
       // 获取表单组件实例 ---> 调用校验函数
       this.$refs["loginForm"].validate(async valid => {
         if (valid) {
