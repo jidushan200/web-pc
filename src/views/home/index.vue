@@ -86,11 +86,16 @@
 
 <script>
 import local from "@/utils/local";
+import eventBus from "@/eventBus";
 export default {
   data() {
     return {
       isOpen: true,
-      userInfo: {}
+      // 如果响应响应式的数据，建议先申明
+      userInfo: {
+        name: "",
+        photo: ""
+      }
     };
   },
   created() {
@@ -98,6 +103,13 @@ export default {
     const user = local.getUser() || {};
     this.userInfo.name = user.name;
     this.userInfo.photo = user.photo;
+    // 接收个人设置中修改过的数据name和photo
+    eventBus.$on("updateName", name => {
+      this.userInfo.name = name;
+    });
+    eventBus.$on("updatePhoto", photo => {
+      this.userInfo.photo = photo;
+    });
   },
   methods: {
     toggleMenu() {

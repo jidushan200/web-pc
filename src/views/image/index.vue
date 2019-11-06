@@ -46,14 +46,14 @@
     </el-card>
     <!-- 对话框 -->
     <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
-      <!-- 参数名:image -->
+      <!-- action 上传图片接口地址 -->
       <el-upload
         class="avatar-uploader"
         action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
         :headers="headers"
+        name="image"
         :show-file-list="false"
         :on-success="handleSuccess"
-        name="image"
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -91,6 +91,23 @@ export default {
     this.getImages();
   },
   methods: {
+    // 打开对话框
+    open() {
+      this.dialogVisible = true;
+      this.imageUrl = null;
+    },
+    // 上传图片成功
+    handleSuccess(res) {
+      // res 就是响应主体  获取图片地址 res.data.url
+      // 给 imageUrl 赋值
+      this.imageUrl = res.data.url;
+      this.$message.success("上传成功");
+      window.setTimeout(() => {
+        // 关闭对话框  更新列表
+        this.dialogVisible = false;
+        this.getImages();
+      }, 2000);
+    },
     // 获取素材列表数据
     async getImages() {
       const {
@@ -124,49 +141,23 @@ export default {
       this.$message.success((data.collect ? "添加收藏" : "取消收藏") + "成功");
     },
     // 删除素材
-    async deleteImage(id) {
-      // this.$confirm("此操作将永久删除该图片, 是否继续?", "温馨提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消",
-      //   type: "warning"
-      // })
-      //   .then(async () => {
-      //     // 点击了确认
-      //     await this.$http.delete(`user/images/${id}`);
-      //     // 删除成功
-      //     this.$message.success("删除成功");
-      //     // 更新列表
-      //     this.getImages();
-      //   })
-      //   .catch(() => {
-      //     // 点击了取消
-      //   });
-      await this.$http.delete(`user/images/${id}`);
-      // 删除成功
-      this.$message.success("删除成功");
-      // 更新列表
-      this.getImages();
-    },
-    // 添加素材
-    // 上传成功时的钩子函数
-    handleSuccess(res) {
-      // res 就是响应主体  获取图片地址 res.data.url
-      // 给 imageUrl 赋值
-      this.imageUrl = res.data.url;
-      this.$message({
-        showClose: true,
-        message: "图片上传成功",
-        type: "success"
-      });
-      setTimeout(() => {
-        this.dialogVisible = false;
-        this.getImages();
-      }, 1500);
-    },
-    // 打开对话框时
-    open() {
-      this.dialogVisible = true;
-      this.imageUrl = null;
+    deleteImage(id) {
+      this.$confirm("此操作将永久删除该图片, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          // 点击了确认
+          await this.$http.delete(`user/images/${id}`);
+          // 删除成功
+          this.$message.success("删除成功");
+          // 更新列表
+          this.getImages();
+        })
+        .catch(() => {
+          // 点击了取消
+        });
     }
   }
 };

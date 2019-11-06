@@ -211,7 +211,6 @@ export default {
     toEdit(id) {
       // this.$router.push("/publish?id=" + id);
       // 为了方便传query,即 ? 后面的参数,一般采用下面的方式
-      console.log(id);
       this.$router.push({ path: "/publish", query: { id } });
     },
     // 删除

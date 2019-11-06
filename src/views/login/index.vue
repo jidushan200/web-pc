@@ -56,7 +56,7 @@ export default {
     };
     return {
       loginForm: {
-        mobile: "13911111111",
+        mobile: "16666666666",
         code: "246810"
       },
       Loginrules: {
