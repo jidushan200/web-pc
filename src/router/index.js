@@ -11,6 +11,7 @@ import Image from "@/views/image"; //素材管理
 import Publish from "@/views/publish"; //发布文章
 import Comment from "@/views/comment"; // 评论管理
 import Setting from "@/views/setting"; // 个人设置
+import Fans from "@/views/fans"; // 粉丝管理
 
 // 404
 import NotFound from "@/views/404"; //404页面
@@ -41,7 +42,9 @@ const router = new VueRouter({
         //评论管理
         { path: "/comment", component: Comment },
         //个人设置
-        { path: "/setting", component: Setting }
+        { path: "/setting", component: Setting },
+        //粉丝管理设置
+        { path: "/fans", component: Fans }
       ]
     },
     // 匹配 不符合规则的路径

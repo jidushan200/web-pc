@@ -73,7 +73,7 @@ export default {
       rules: {
         name: [
           { required: true, message: "媒体名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 7 个字符", trigger: "blur" }
+          { min: 3, max: 7, message: "长度在 3 到 7 个字符", trigger: "blur" }
         ],
         intro: [
           { required: true, message: "媒体介绍", trigger: "blur" },
@@ -113,12 +113,6 @@ export default {
       } = await this.$http.patch("user/photo", fm);
       // 获取到的data赋值给userInfo
       this.userInfo.photo = data.photo;
-      // 修改home组件数据
-      eventBus.$emit("updatePhoto", data.photo);
-      // 改动token数据
-      const user = local.getUser();
-      user.photo = data.photo;
-      local.setUser(user);
     },
     // (除头像)基本信息上传
     async saveuserinfo() {
@@ -133,10 +127,14 @@ export default {
       });
       // 改home组件数据
       eventBus.$emit("updateName", name);
+      eventBus.$emit("updatePhoto", this.userInfo.photo);
       // 改动token数据
       const user = local.getUser();
       user.name = data.name;
+      user.photo = this.userInfo.photo;
       local.setUser(user);
+      // 修改home组件数据
+
       // 提示
       this.$message.success("个人设置保存成功");
     }
